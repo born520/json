@@ -29,7 +29,8 @@ function renderTable(data) {
 
                 row.appendChild(cell);
             } else {
-                row.appendChild(document.createElement('td'));
+                const emptyCell = document.createElement('td');
+                row.appendChild(emptyCell);
             }
         }
         table.appendChild(row);
@@ -40,8 +41,8 @@ function renderTable(data) {
         const { row, column, numRows, numColumns } = merge;
 
         const cell = table.rows[row].cells[column];
-        cell.rowSpan = numRows;
-        cell.colSpan = numColumns;
+        if (numRows > 1) cell.rowSpan = numRows;
+        if (numColumns > 1) cell.colSpan = numColumns;
 
         for (let i = 0; i < numRows; i++) {
             for (let j = 0; j < numColumns; j++) {
