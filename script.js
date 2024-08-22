@@ -9,29 +9,40 @@ function renderTable(data) {
     const table = document.createElement('table');
     const tbody = document.createElement('tbody');
 
+    // 병합된 셀들을 먼저 처리하여 중복을 방지합니다.
+    const mergedCellPositions = {};
+
+    if (data.mergedCells) {
+        data.mergedCells.forEach(merge => {
+            for (let i = 0; i < merge.numRows; i++) {
+                for (let j = 0; j < merge.numColumns; j++) {
+                    mergedCellPositions[`${merge.row + i},${merge.column + j}`] = true;
+                }
+            }
+        });
+    }
+
     data.tableData.forEach((rowData, rowIndex) => {
         const row = document.createElement('tr');
 
         rowData.forEach((cellData, colIndex) => {
-            if (!cellData) return;
+            // 이미 병합된 셀에 포함된 위치라면 건너뜁니다.
+            if (mergedCellPositions[`${rowIndex + 1},${colIndex + 1}`]) {
+                return;
+            }
 
-            // 병합된 셀 처리
+            const cell = document.createElement('td');
             const mergedCell = data.mergedCells.find(mc => mc.row === rowIndex + 1 && mc.column === colIndex + 1);
+
             if (mergedCell) {
-                const cell = document.createElement('td');
                 cell.rowSpan = mergedCell.numRows || 1;
                 cell.colSpan = mergedCell.numColumns || 1;
-                cell.innerHTML = cellData.richText || cellData.text || '';
-
-                applyStyles(cell, rowIndex, colIndex, data);
-                row.appendChild(cell);
-            } else if (!row.querySelector(`td[rowspan][colspan]`)) {
-                const cell = document.createElement('td');
-                cell.innerHTML = cellData.richText || cellData.text || '';
-
-                applyStyles(cell, rowIndex, colIndex, data);
-                row.appendChild(cell);
             }
+
+            cell.innerHTML = cellData.richText || cellData.text || '';
+
+            applyStyles(cell, rowIndex, colIndex, data);
+            row.appendChild(cell);
         });
 
         tbody.appendChild(row);
