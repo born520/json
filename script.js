@@ -16,12 +16,14 @@ function renderTable(data) {
     for (let i = 0; i < tableData.length; i++) {
         const row = document.createElement('tr');
         for (let j = 0; j < tableData[i].length; j++) {
+            const cellData = tableData[i][j];
             const cell = document.createElement('td');
-            cell.textContent = tableData[i][j].text || '';
+
+            cell.textContent = cellData.text || '';
 
             // Apply styles if they exist
-            if (tableData[i][j].style) {
-                Object.assign(cell.style, tableData[i][j].style);
+            if (cellData.style) {
+                Object.assign(cell.style, cellData.style);
             }
 
             row.appendChild(cell);
@@ -33,25 +35,26 @@ function renderTable(data) {
     mergedCells.forEach(merge => {
         const { row, column, numRows, numColumns } = merge;
 
-        // Check if the row and column indices are within bounds
+        // Check if the starting cell exists
         if (table.rows[row] && table.rows[row].cells[column]) {
             const cell = table.rows[row].cells[column];
             cell.rowSpan = numRows;
             cell.colSpan = numColumns;
 
-            // Remove cells that are merged into this one
-            for (let i = row; i < row + numRows; i++) {
-                for (let j = column; j < column + numColumns; j++) {
-                    // Ensure the cell exists before trying to delete it
-                    if (i !== row || j !== column) {
-                        if (table.rows[i] && table.rows[i].cells[j]) {
-                            table.rows[i].deleteCell(j);
+            // Remove the cells that are merged into the main cell
+            for (let i = 0; i < numRows; i++) {
+                for (let j = 0; j < numColumns; j++) {
+                    if (i !== 0 || j !== 0) {
+                        const targetRow = row + i;
+                        const targetCol = column + j;
+                        if (table.rows[targetRow] && table.rows[targetRow].cells[targetCol]) {
+                            table.rows[targetRow].deleteCell(targetCol);
                         }
                     }
                 }
             }
         } else {
-            console.error(`Cell to be merged not found at row ${row}, column ${column}`);
+            console.error(`Failed to merge cells at row ${row}, column ${column}`);
         }
     });
 
