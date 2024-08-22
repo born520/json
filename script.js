@@ -1,53 +1,63 @@
+function renderTable(data) {
+    try {
+        console.log("Starting renderTable function");
+        console.log("Data received:", data);
+
+        const table = document.createElement('table');
+
+        data.forEach((rowData, rowIndex) => {
+            const row = table.insertRow(-1);
+            console.log(`Rendering row ${rowIndex}`, rowData);
+
+            rowData.forEach((cellData, cellIndex) => {
+                const cell = row.insertCell(-1);
+                console.log(`Adding cell at row ${rowIndex}, column ${cellIndex}`, cellData);
+
+                cell.innerHTML = cellData.content;
+                if (cellData.colspan) cell.colSpan = cellData.colspan;
+                if (cellData.rowspan) cell.rowSpan = cellData.rowspan;
+
+                console.log(`Cell content: ${cellData.content}, colspan: ${cellData.colspan}, rowspan: ${cellData.rowspan}`);
+            });
+        });
+
+        applyMergedCells(table, data);
+        document.body.appendChild(table);
+    } catch (error) {
+        console.error("Error loading JSON data:", error);
+    }
+}
+
+function applyMergedCells(table, data) {
+    try {
+        console.log("Applying merged cells");
+
+        data.forEach((rowData, rowIndex) => {
+            rowData.forEach((cellData, cellIndex) => {
+                if (cellData.merged) {
+                    console.log(`Merging cells starting at row ${rowIndex}, column ${cellIndex}`);
+                    const row = table.rows[rowIndex];
+                    const cell = row.cells[cellIndex];
+
+                    if (cellData.merged.colspan) {
+                        console.log(`Setting colspan for row ${rowIndex}, column ${cellIndex} to ${cellData.merged.colspan}`);
+                        cell.colSpan = cellData.merged.colspan;
+                    }
+
+                    if (cellData.merged.rowspan) {
+                        console.log(`Setting rowspan for row ${rowIndex}, column ${cellIndex} to ${cellData.merged.rowspan}`);
+                        cell.rowSpan = cellData.merged.rowspan;
+                    }
+                }
+            });
+        });
+    } catch (error) {
+        console.error("Error applying merged cells:", error);
+    }
+}
+
+// Sample invocation (assuming data is already loaded)
 fetch('data.json')
     .then(response => response.json())
     .then(data => renderTable(data))
-    .catch(error => console.error('Error loading JSON data:', error));
-
-function renderTable(data) {
-    const table = document.createElement('table');
-    document.body.appendChild(table);
-
-    data.tableData.forEach((rowData, rowIndex) => {
-        const row = table.insertRow();
-        rowData.forEach((cellData, cellIndex) => {
-            const cell = row.insertCell();
-            cell.textContent = cellData.text;
-            cell.style.backgroundColor = data.backgrounds[rowIndex][cellIndex];
-            cell.style.color = data.fontColors[rowIndex][cellIndex];
-            cell.style.textAlign = data.horizontalAlignments[rowIndex][cellIndex];
-            cell.style.verticalAlign = data.verticalAlignments[rowIndex][cellIndex];
-            cell.style.fontWeight = data.fontWeights[rowIndex][cellIndex];
-            cell.style.fontStyle = data.fontStyles[rowIndex][cellIndex];
-            cell.style.fontSize = data.fontSizes[rowIndex][cellIndex] + 'px';
-            cell.style.height = data.rowHeights[rowIndex] + 'px';
-            cell.style.width = data.columnWidths[cellIndex] + 'px';
-            cell.style.whiteSpace = 'pre-wrap';
-        });
-    });
-
-    applyMergedCells(table, data.mergedCells);
-}
-
-function applyMergedCells(table, mergedCells) {
-    mergedCells.forEach(cellInfo => {
-        const row = table.rows[cellInfo.row];
-        if (row) {
-            const cell = row.cells[cellInfo.column];
-            if (cell) {
-                cell.rowSpan = cellInfo.numRows;
-                cell.colSpan = cellInfo.numColumns;
-
-                for (let i = 0; i < cellInfo.numRows; i++) {
-                    for (let j = 0; j < cellInfo.numColumns; j++) {
-                        if (i !== 0 || j !== 0) {
-                            const rowToModify = table.rows[cellInfo.row + i];
-                            if (rowToModify && rowToModify.cells[cellInfo.column + j]) {
-                                rowToModify.deleteCell(cellInfo.column + j);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    });
-}
+    .catch(error => console.error("Error fetching JSON data:", error));
