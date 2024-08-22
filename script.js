@@ -9,10 +9,10 @@ function renderTable(data) {
     const table = document.createElement('table');
     const tbody = document.createElement('tbody');
 
-    // 병합된 셀들의 위치를 기록하는 객체
+    // Object to record merged cell positions
     const mergedCellPositions = {};
 
-    // 병합된 셀 정보 설정
+    // Set up merged cell information
     if (data.mergedCells) {
         data.mergedCells.forEach(merge => {
             for (let i = 0; i < merge.numRows; i++) {
@@ -23,12 +23,12 @@ function renderTable(data) {
         });
     }
 
-    // 테이블 데이터 설정
+    // Set up table data
     data.tableData.forEach((rowData, rowIndex) => {
         const row = document.createElement('tr');
 
         rowData.forEach((cellData, colIndex) => {
-            // 병합된 셀에 속해있으면 건너뜁니다.
+            // Skip cells that are part of a merge
             if (mergedCellPositions[`${rowIndex},${colIndex}`]) {
                 return;
             }
@@ -55,7 +55,7 @@ function renderTable(data) {
 }
 
 function applyStyles(cell, rowIndex, colIndex, data) {
-    // 스타일 적용 부분
+    // Apply styling
     const backgroundColor = data.backgrounds[rowIndex][colIndex];
     const fontColor = data.fontColors[rowIndex][colIndex];
     const textAlign = data.horizontalAlignments[rowIndex][colIndex];
