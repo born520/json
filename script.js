@@ -48,7 +48,9 @@ function renderTable(data) {
             for (let i = 0; i < numRows; i++) {
                 for (let j = 0; j < numCols; j++) {
                     if (i === 0 && j === 0) continue; // Skip the original cell
-                    table.rows[startRow + i].deleteCell(startCol);
+                    if (startCol + j < table.rows[startRow + i].cells.length) {
+                        table.rows[startRow + i].deleteCell(startCol + j);
+                    }
                 }
             }
         });
