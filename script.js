@@ -13,8 +13,8 @@ function renderTable(data) {
         const row = document.createElement('tr');
 
         rowData.forEach((cellData, colIndex) => {
-            if (cellData) { // cellData가 유효한 경우에만 처리
-                const cell = document.createElement('td');
+            if (cellData !== null) { // cellData가 유효한 경우에만 처리
+                const cell = document.createElement(rowIndex === 0 ? 'th' : 'td');
                 cell.textContent = cellData.text || '';
 
                 if (cellData.rowSpan) {
@@ -25,6 +25,11 @@ function renderTable(data) {
                 }
 
                 row.appendChild(cell);
+            } else {
+                const prevCell = row.lastElementChild;
+                if (prevCell) {
+                    prevCell.colSpan = (prevCell.colSpan || 1) + 1;
+                }
             }
         });
 
