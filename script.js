@@ -44,13 +44,13 @@ function renderTable(data) {
         if (numRows > 1) cell.rowSpan = numRows;
         if (numColumns > 1) cell.colSpan = numColumns;
 
-        for (let i = 0; i < numRows; i++) {
-            for (let j = 0; j < numColumns; j++) {
-                if (i !== 0 || j !== 0) {
-                    const targetRow = table.rows[row + i];
-                    if (targetRow && targetRow.cells[column + j]) {
-                        targetRow.deleteCell(column + j);
-                    }
+        for (let i = row; i < row + numRows; i++) {
+            for (let j = column; j < column + numColumns; j++) {
+                if (i === row && j === column) continue;
+
+                const targetRow = table.rows[i];
+                if (targetRow && targetRow.cells[j]) {
+                    targetRow.cells[j].remove();
                 }
             }
         }
