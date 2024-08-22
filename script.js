@@ -9,25 +9,27 @@ function renderTable(data) {
     const table = document.createElement('table');
     const tbody = document.createElement('tbody');
 
-    // 병합된 셀들을 먼저 처리하여 중복을 방지합니다.
+    // 병합된 셀들의 위치를 기록하는 객체
     const mergedCellPositions = {};
 
+    // 병합된 셀 정보 설정
     if (data.mergedCells) {
         data.mergedCells.forEach(merge => {
             for (let i = 0; i < merge.numRows; i++) {
                 for (let j = 0; j < merge.numColumns; j++) {
-                    mergedCellPositions[`${merge.row + i},${merge.column + j}`] = true;
+                    mergedCellPositions[`${merge.row - 1 + i},${merge.column - 1 + j}`] = true;
                 }
             }
         });
     }
 
+    // 테이블 데이터 설정
     data.tableData.forEach((rowData, rowIndex) => {
         const row = document.createElement('tr');
 
         rowData.forEach((cellData, colIndex) => {
-            // 이미 병합된 셀에 포함된 위치라면 건너뜁니다.
-            if (mergedCellPositions[`${rowIndex + 1},${colIndex + 1}`]) {
+            // 병합된 셀에 속해있으면 건너뜁니다.
+            if (mergedCellPositions[`${rowIndex},${colIndex}`]) {
                 return;
             }
 
@@ -54,15 +56,17 @@ function renderTable(data) {
 
 function applyStyles(cell, rowIndex, colIndex, data) {
     // 스타일 적용 부분
-    const styleData = data.styles ? data.styles.find(s => s.row === rowIndex + 1 && s.column === colIndex + 1) : null;
+    const backgroundColor = data.backgrounds[rowIndex][colIndex];
+    const fontColor = data.fontColors[rowIndex][colIndex];
+    const textAlign = data.horizontalAlignments[rowIndex][colIndex];
+    const verticalAlign = data.verticalAlignments[rowIndex][colIndex];
+    const fontWeight = data.fontWeights[rowIndex][colIndex];
+    const fontSize = data.fontSizes[rowIndex][colIndex] + 'px';
 
-    if (styleData) {
-        cell.style.backgroundColor = styleData.backgroundColor || '';
-        cell.style.color = styleData.fontColor || '';
-        cell.style.fontWeight = styleData.fontWeight || '';
-        cell.style.fontStyle = styleData.fontStyle || '';
-        cell.style.fontSize = styleData.fontSize ? styleData.fontSize + 'px' : '';
-        cell.style.textAlign = styleData.textAlign || '';
-        cell.style.verticalAlign = styleData.verticalAlign || '';
-    }
+    cell.style.backgroundColor = backgroundColor || '';
+    cell.style.color = fontColor || '';
+    cell.style.textAlign = textAlign || '';
+    cell.style.verticalAlign = verticalAlign || '';
+    cell.style.fontWeight = fontWeight || '';
+    cell.style.fontSize = fontSize || '';
 }
