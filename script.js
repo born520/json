@@ -12,17 +12,22 @@ function renderTable(data) {
     const tableData = data.tableData;
     const mergedCells = data.mergedCells;
 
-    for (let i = 0; i < tableData.length; i++) {
+    tableData.forEach((rowData, rowIndex) => {
         const row = document.createElement('tr');
-        for (let j = 0; j < tableData[i].length; j++) {
-            const cellData = tableData[i][j];
-            const cell = document.createElement('td');
-
-            if (cellData) {
+        rowData.forEach((cellData, colIndex) => {
+            if (cellData !== null) {
+                const cell = document.createElement('td');
                 cell.textContent = cellData.text || '';
-
+                
                 if (cellData.style) {
                     Object.assign(cell.style, cellData.style);
+                }
+
+                // 병합 정보에 따라 셀의 병합 적용
+                const mergeInfo = mergedCells.find(merge => merge.row === rowIndex && merge.column === colIndex);
+                if (mergeInfo) {
+                    if (mergeInfo.numRows > 1) cell.rowSpan = mergeInfo.numRows;
+                    if (mergeInfo.numColumns > 1) cell.colSpan = mergeInfo.numColumns;
                 }
 
                 row.appendChild(cell);
@@ -30,29 +35,8 @@ function renderTable(data) {
                 const emptyCell = document.createElement('td');
                 row.appendChild(emptyCell);
             }
-        }
+        });
         table.appendChild(row);
-    }
-
-    mergedCells.forEach(merge => {
-        const { row, column, numRows, numColumns } = merge;
-
-        const cell = table.rows[row].cells[column];
-        if (numRows > 1) cell.rowSpan = numRows;
-        if (numColumns > 1) cell.colSpan = numColumns;
-
-        for (let i = row; i < row + numRows; i++) {
-            for (let j = column; j < column + numColumns; j++) {
-                if (i === row && j === column) continue;
-
-                if (table.rows[i]) {
-                    const targetRow = table.rows[i];
-                    if (targetRow && targetRow.cells[j]) {
-                        targetRow.cells[j].remove();
-                    }
-                }
-            }
-        }
     });
 
     container.appendChild(table);
