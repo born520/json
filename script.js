@@ -1,46 +1,47 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener("DOMContentLoaded", function () {
     fetch('data.json')
         .then(response => response.json())
-        .then(data => {
-            if (Array.isArray(data)) {
-                renderTable(data); // data가 배열인 경우
-            } else {
-                console.error('Unexpected JSON format: data should be an array');
-            }
-        })
-        .catch(error => console.error('Error loading JSON data:', error));
+        .then(data => renderTable(data))
+        .catch(error => console.error("Error loading JSON data:", error));
 });
 
 function renderTable(data) {
-    const container = document.getElementById('table-container');
     const table = document.createElement('table');
 
-    data.forEach((rowData, rowIndex) => {
-        const row = document.createElement('tr');
+    data.tableData.forEach((rowData, rowIndex) => {
+        const row = table.insertRow();
 
-        rowData.forEach((cellData, colIndex) => {
-            if (cellData !== null) { // cellData가 유효한 경우에만 처리
-                const cell = document.createElement(rowIndex === 0 ? 'th' : 'td');
-                cell.textContent = cellData.text || '';
+        rowData.forEach((cellData, cellIndex) => {
+            let cell;
 
-                if (cellData.rowSpan) {
-                    cell.rowSpan = cellData.rowSpan;
-                }
-                if (cellData.colSpan) {
-                    cell.colSpan = cellData.colSpan;
-                }
+            // Check if cell is part of a merged cell
+            const mergedCell = data.mergedCells.find(mc => mc.row === rowIndex + 1 && mc.column === cellIndex + 1);
 
-                row.appendChild(cell);
-            } else {
-                const prevCell = row.lastElementChild;
-                if (prevCell) {
-                    prevCell.colSpan = (prevCell.colSpan || 1) + 1;
-                }
+            if (mergedCell) {
+                cell = row.insertCell(-1);
+                cell.rowSpan = mergedCell.numRows;
+                cell.colSpan = mergedCell.numColumns;
+                cell.innerHTML = cellData.richText || cellData.text;
+                cell.style.backgroundColor = data.backgrounds[rowIndex][cellIndex];
+                cell.style.color = data.fontColors[rowIndex][cellIndex];
+                cell.style.fontWeight = data.fontWeights[rowIndex][cellIndex];
+                cell.style.fontStyle = data.fontStyles[rowIndex][cellIndex];
+                cell.style.fontSize = data.fontSizes[rowIndex][cellIndex] + 'px';
+                cell.style.textAlign = data.horizontalAlignments[rowIndex][cellIndex];
+                cell.style.verticalAlign = data.verticalAlignments[rowIndex][cellIndex];
+            } else if (!row.cells[cellIndex]) {
+                cell = row.insertCell(-1);
+                cell.innerHTML = cellData.richText || cellData.text;
+                cell.style.backgroundColor = data.backgrounds[rowIndex][cellIndex];
+                cell.style.color = data.fontColors[rowIndex][cellIndex];
+                cell.style.fontWeight = data.fontWeights[rowIndex][cellIndex];
+                cell.style.fontStyle = data.fontStyles[rowIndex][cellIndex];
+                cell.style.fontSize = data.fontSizes[rowIndex][cellIndex] + 'px';
+                cell.style.textAlign = data.horizontalAlignments[rowIndex][cellIndex];
+                cell.style.verticalAlign = data.verticalAlignments[rowIndex][cellIndex];
             }
         });
-
-        table.appendChild(row);
     });
 
-    container.appendChild(table);
+    document.body.appendChild(table);
 }
