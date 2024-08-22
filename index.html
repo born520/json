@@ -8,11 +8,7 @@
         body {
             font-family: Arial, sans-serif;
             margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+            padding: 20px;
             background-color: #ffffff;
         }
 
@@ -20,20 +16,22 @@
             width: 100%;
             max-width: 1200px;
             border-collapse: collapse;
+            margin: 0 auto; /* 테이블을 가운데 정렬 */
             table-layout: fixed;
         }
 
         td, th {
             padding: 8px;
-            border: 1px solid #dddddd;
+            border: 1px solid #000000;
             text-align: center;
             vertical-align: middle;
             word-wrap: break-word;
         }
 
         th {
-            background-color: #14766a;
+            background-color: #2f7b7a;
             color: white;
+            font-weight: bold;
         }
 
         tr:nth-child(even) {
@@ -42,6 +40,18 @@
 
         tr:hover {
             background-color: #e2e2e2;
+        }
+
+        .title-row {
+            background-color: #184d47;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+            text-align: center;
+        }
+
+        .merge-row {
+            background-color: #bfbfbf;
         }
     </style>
 </head>
@@ -80,6 +90,14 @@
                         if (mergedCell) {
                             if (mergedCell.numRows > 1) td.rowSpan = mergedCell.numRows;
                             if (mergedCell.numColumns > 1) td.colSpan = mergedCell.numColumns;
+                        }
+
+                        // 스타일 적용
+                        if (rowIndex === 0) {
+                            td.classList.add('title-row');
+                        }
+                        if (rowIndex > 0 && colIndex === 0) {
+                            td.classList.add('merge-row');
                         }
 
                         tr.appendChild(td);
