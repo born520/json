@@ -6,15 +6,14 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: #f9f9f9; /* 배경 색을 좀 더 부드럽게 */
+    background-color: #f9f9f9;
 }
 
 table {
     width: 100%;
     max-width: 1200px;
     border-collapse: collapse;
-    table-layout: fixed; /* 고정된 테이블 레이아웃 */
-    margin: 20px; /* 상하 좌우에 여백 추가 */
+    table-layout: fixed;
 }
 
 td, th {
@@ -22,8 +21,7 @@ td, th {
     border: 1px solid #dddddd;
     text-align: center;
     vertical-align: middle;
-    word-wrap: break-word; /* 긴 텍스트 줄 바꿈 */
-    font-size: 14px; /* 글자 크기 조정 */
+    word-wrap: break-word;
 }
 
 th {
@@ -39,9 +37,13 @@ tr:hover {
     background-color: #e2e2e2;
 }
 
-h1 {
-    text-align: center;
-    font-size: 24px;
-    color: #14766a;
-    margin-bottom: 20px;
+/* 특정 열의 스타일 조정 */
+td.cost-type {
+    background-color: #1e7e67;
+    color: white;
+}
+
+td.standard, td.max {
+    background-color: #c1c1c1;
+    font-weight: bold;
 }
