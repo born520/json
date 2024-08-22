@@ -40,17 +40,17 @@ function renderTable(data) {
             const numRows = merge.numRows;
             const numCols = merge.numColumns;
 
-            if (startRow >= table.rows.length) return;
+            if (startRow >= table.rows.length || startCol >= table.rows[startRow].cells.length) return;
+
             const cell = table.rows[startRow].cells[startCol];
             cell.rowSpan = numRows;
             cell.colSpan = numCols;
 
             // Remove the cells that were merged
             for (let i = 0; i < numRows; i++) {
-                if (startRow + i >= table.rows.length) continue;
                 for (let j = 0; j < numCols; j++) {
                     if (i === 0 && j === 0) continue; // Skip the original cell
-                    if (startCol + j < table.rows[startRow + i].cells.length) {
+                    if (startRow + i < table.rows.length && startCol + j < table.rows[startRow + i].cells.length) {
                         table.rows[startRow + i].deleteCell(startCol + j);
                     }
                 }
@@ -63,7 +63,6 @@ function renderTable(data) {
     }
 }
 
-// Assuming that you have already fetched your JSON data and passed it to this function
 fetch('data.json')
     .then(response => response.json())
     .then(data => renderTable(data))
