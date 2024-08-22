@@ -1,93 +1,14 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JSON 기반 테이블</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f8f8f8;
-        }
-
-        table {
-            width: 100%;
-            max-width: 1200px;
-            border-collapse: collapse;
-            table-layout: fixed;
-            margin: 0 auto;
-        }
-
-        th, td {
-            padding: 8px;
-            border: 1px solid #dddddd;
-            text-align: center;
-            vertical-align: middle;
-            word-wrap: break-word;
-        }
-
-        th {
-            background-color: #14766a;
-            color: white;
-        }
-
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-
-        tr:hover {
-            background-color: #e2e2e2;
-        }
-    </style>
+    <title>테이블 페이지</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
-    <table id="dataTable">
-        <!-- 테이블이 자바스크립트로 동적으로 생성됩니다 -->
-    </table>
-
-    <script>
-        fetch('data.json')
-            .then(response => response.json())
-            .then(data => {
-                const table = document.getElementById('dataTable');
-
-                // 테이블 데이터 및 스타일 적용
-                data.tableData.forEach((rowData, rowIndex) => {
-                    const row = document.createElement('tr');
-                    rowData.forEach((cellData, colIndex) => {
-                        const cell = document.createElement(rowIndex === 0 ? 'th' : 'td');
-                        cell.textContent = cellData.text || '';  // 셀 텍스트
-
-                        // 셀 병합 처리
-                        const mergeInfo = data.mergedCells.find(m =>
-                            m.row === rowIndex && m.column === colIndex);
-                        if (mergeInfo) {
-                            if (mergeInfo.numRows > 1) {
-                                cell.rowSpan = mergeInfo.numRows;
-                            }
-                            if (mergeInfo.numColumns > 1) {
-                                cell.colSpan = mergeInfo.numColumns;
-                            }
-                        }
-
-                        // 스타일 적용
-                        if (cellData.style) {
-                            cell.style.backgroundColor = cellData.style.backgroundColor || '';
-                            cell.style.color = cellData.style.color || '';
-                            cell.style.fontWeight = cellData.style.fontWeight || '';
-                            cell.style.fontStyle = cellData.style.fontStyle || '';
-                            cell.style.textAlign = cellData.style.textAlign || '';
-                        }
-
-                        row.appendChild(cell);
-                    });
-                    table.appendChild(row);
-                });
-            });
-    </script>
-
+    <table id="data-table"></table>
+    <script src="data.json" type="application/json"></script>
+    <script src="script.js"></script>
 </body>
 </html>
