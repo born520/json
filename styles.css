@@ -1,29 +1,22 @@
 body {
     font-family: Arial, sans-serif;
     margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: #f5f5f5;
+    padding: 20px;
 }
 
 table {
-    width: 90%;
+    width: 100%;
     max-width: 1200px;
     border-collapse: collapse;
-    table-layout: fixed;
-    background-color: white;
-    border: 1px solid #dddddd;
+    margin: 0 auto;
 }
 
 td, th {
-    padding: 10px;
+    padding: 8px;
     border: 1px solid #dddddd;
     text-align: center;
     vertical-align: middle;
-    word-wrap: break-word;
+    word-wrap: break-word; /* 긴 텍스트 줄 바꿈 */
 }
 
 th {
