@@ -26,20 +26,22 @@ function renderTable(data) {
     for (let i = 0; i < rowCount; i++) {
         const row = document.createElement('tr');
         for (let j = 0; j < colCount; j++) {
-            const cellData = tableData[i][j];
-            const cell = document.createElement('td');
-            cell.textContent = cellData.text;
+            if (!tableData[i][j].merged) {
+                const cellData = tableData[i][j];
+                const cell = document.createElement('td');
+                cell.textContent = cellData.text;
 
-            // Apply styles
-            cell.style.backgroundColor = backgrounds[i][j];
-            cell.style.color = fontColors[i][j];
-            cell.style.textAlign = horizontalAlignments[i][j];
-            cell.style.verticalAlign = verticalAlignments[i][j];
-            cell.style.fontWeight = fontWeights[i][j];
-            cell.style.fontStyle = fontStyles[i][j];
-            cell.style.fontSize = `${fontSizes[i][j]}px`;
+                // Apply styles
+                cell.style.backgroundColor = backgrounds[i][j];
+                cell.style.color = fontColors[i][j];
+                cell.style.textAlign = horizontalAlignments[i][j];
+                cell.style.verticalAlign = verticalAlignments[i][j];
+                cell.style.fontWeight = fontWeights[i][j];
+                cell.style.fontStyle = fontStyles[i][j];
+                cell.style.fontSize = `${fontSizes[i][j]}px`;
 
-            row.appendChild(cell);
+                row.appendChild(cell);
+            }
         }
         table.appendChild(row);
     }
