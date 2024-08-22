@@ -22,26 +22,24 @@ function renderTable(data) {
                 cell.rowSpan = mergedCell.numRows;
                 cell.colSpan = mergedCell.numColumns;
                 cell.innerHTML = cellData.richText || cellData.text;
-                cell.style.backgroundColor = data.backgrounds[rowIndex][cellIndex];
-                cell.style.color = data.fontColors[rowIndex][cellIndex];
-                cell.style.fontWeight = data.fontWeights[rowIndex][cellIndex];
-                cell.style.fontStyle = data.fontStyles[rowIndex][cellIndex];
-                cell.style.fontSize = data.fontSizes[rowIndex][cellIndex] + 'px';
-                cell.style.textAlign = data.horizontalAlignments[rowIndex][cellIndex];
-                cell.style.verticalAlign = data.verticalAlignments[rowIndex][cellIndex];
+                applyStyles(cell, rowIndex, cellIndex, data);
             } else if (!row.cells[cellIndex]) {
                 cell = row.insertCell(-1);
                 cell.innerHTML = cellData.richText || cellData.text;
-                cell.style.backgroundColor = data.backgrounds[rowIndex][cellIndex];
-                cell.style.color = data.fontColors[rowIndex][cellIndex];
-                cell.style.fontWeight = data.fontWeights[rowIndex][cellIndex];
-                cell.style.fontStyle = data.fontStyles[rowIndex][cellIndex];
-                cell.style.fontSize = data.fontSizes[rowIndex][cellIndex] + 'px';
-                cell.style.textAlign = data.horizontalAlignments[rowIndex][cellIndex];
-                cell.style.verticalAlign = data.verticalAlignments[rowIndex][cellIndex];
+                applyStyles(cell, rowIndex, cellIndex, data);
             }
         });
     });
 
     document.body.appendChild(table);
+}
+
+function applyStyles(cell, rowIndex, cellIndex, data) {
+    cell.style.backgroundColor = data.backgrounds[rowIndex][cellIndex];
+    cell.style.color = data.fontColors[rowIndex][cellIndex];
+    cell.style.fontWeight = data.fontWeights[rowIndex][cellIndex];
+    cell.style.fontStyle = data.fontStyles[rowIndex][cellIndex];
+    cell.style.fontSize = data.fontSizes[rowIndex][cellIndex] + 'px';
+    cell.style.textAlign = data.horizontalAlignments[rowIndex][cellIndex];
+    cell.style.verticalAlign = data.verticalAlignments[rowIndex][cellIndex];
 }
