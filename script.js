@@ -16,7 +16,8 @@ function renderTable(data) {
         rowData.forEach((cellData, colIndex) => {
             if (!cellData) return;
 
-            const mergedCell = data.mergedCells.find(mc => mc.row === rowIndex + 1 && mc.column === colIndex + 1);
+            // 병합된 셀 처리
+            const mergedCell = data.mergedCells ? data.mergedCells.find(mc => mc.row === rowIndex + 1 && mc.column === colIndex + 1) : null;
             if (mergedCell) {
                 const cell = document.createElement('td');
                 cell.rowSpan = mergedCell.numRows || 1;
@@ -44,7 +45,8 @@ function renderTable(data) {
 }
 
 function applyStyles(cell, rowIndex, colIndex, data) {
-    const styleData = data.styles.find(s => s.row === rowIndex + 1 && s.column === colIndex + 1);
+    // 스타일 적용 부분
+    const styleData = data.styles ? data.styles.find(s => s.row === rowIndex + 1 && s.column === colIndex + 1) : null;
 
     if (styleData) {
         cell.style.backgroundColor = styleData.backgroundColor || '';
