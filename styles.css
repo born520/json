@@ -6,12 +6,14 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
+    background-color: #f0f0f0;
 }
 
 table {
     width: 100%;
     max-width: 1200px;
     border-collapse: collapse;
+    table-layout: fixed;
 }
 
 td, th {
@@ -19,6 +21,7 @@ td, th {
     border: 1px solid #dddddd;
     text-align: center;
     vertical-align: middle;
+    word-wrap: break-word; /* 긴 텍스트 줄 바꿈 */
 }
 
 th {
