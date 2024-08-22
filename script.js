@@ -30,13 +30,22 @@ function renderTable(data) {
 
 function applyMergedCells(table, mergedCells) {
     mergedCells.forEach(cellInfo => {
-        const cell = table.rows[cellInfo.row - 1].cells[cellInfo.column - 1];
-        cell.rowSpan = cellInfo.numRows;
-        cell.colSpan = cellInfo.numColumns;
-        for (let i = 0; i < cellInfo.numRows; i++) {
-            for (let j = 0; j < cellInfo.numColumns; j++) {
-                if (!(i === 0 && j === 0)) {
-                    table.rows[cellInfo.row - 1 + i].deleteCell(cellInfo.column - 1);
+        const row = table.rows[cellInfo.row];
+        if (row) {
+            const cell = row.cells[cellInfo.column];
+            if (cell) {
+                cell.rowSpan = cellInfo.numRows;
+                cell.colSpan = cellInfo.numColumns;
+
+                for (let i = 0; i < cellInfo.numRows; i++) {
+                    for (let j = 0; j < cellInfo.numColumns; j++) {
+                        if (i !== 0 || j !== 0) {
+                            const rowToModify = table.rows[cellInfo.row + i];
+                            if (rowToModify && rowToModify.cells[cellInfo.column + j]) {
+                                rowToModify.deleteCell(cellInfo.column + j);
+                            }
+                        }
+                    }
                 }
             }
         }
