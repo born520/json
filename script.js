@@ -44,15 +44,21 @@ function renderTable(data) {
             console.log(`Merging cells at row ${startRow}, column ${startCol} spanning ${numRows} rows and ${numCols} columns`);
 
             const cell = table.rows[startRow].cells[startCol];
-            cell.rowSpan = numRows;
-            cell.colSpan = numCols;
+            if (cell) {
+                cell.rowSpan = numRows;
+                cell.colSpan = numCols;
 
-            // Hide merged cells (no need to delete them)
-            for (let i = startRow; i < startRow + numRows; i++) {
-                for (let j = startCol; j < startCol + numCols; j++) {
-                    if (i === startRow && j === startCol) continue;
-                    table.rows[i].cells[j].style.display = 'none';
+                // Hide merged cells (no need to delete them)
+                for (let i = startRow; i < startRow + numRows; i++) {
+                    for (let j = startCol; j < startCol + numCols; j++) {
+                        if (i === startRow && j === startCol) continue;
+                        if (table.rows[i] && table.rows[i].cells[j]) {
+                            table.rows[i].cells[j].style.display = 'none';
+                        }
+                    }
                 }
+            } else {
+                console.error(`Cell at row ${startRow}, column ${startCol} does not exist`);
             }
         });
 
