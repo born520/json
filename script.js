@@ -55,7 +55,10 @@ function renderTable(data) {
         for (let i = 0; i < numRows; i++) {
             for (let j = 0; j < numColumns; j++) {
                 if (i > 0 || j > 0) {
-                    table.rows[row - 1 + i].deleteCell(column - 1 + j);
+                    const targetRow = table.rows[row - 1 + i];
+                    if (targetRow && targetRow.cells[column - 1 + j]) {
+                        targetRow.deleteCell(column - 1 + j);
+                    }
                 }
             }
         }
