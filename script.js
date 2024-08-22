@@ -1,13 +1,52 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>테이블 렌더링</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <div id="table-container"></div>
-    <script src="script.js"></script>
-</body>
-</html>
+document.addEventListener('DOMContentLoaded', () => {
+    fetch('data.json')
+        .then(response => response.json())
+        .then(data => renderTable(data))
+        .catch(error => console.error('Error loading JSON data:', error));
+});
+
+function renderTable(data) {
+    const container = document.getElementById('table-container');
+    const table = document.createElement('table');
+
+    const tableData = data.tableData;
+    const mergedCells = data.mergedCells;
+
+    // Create table rows and cells
+    for (let i = 0; i < tableData.length; i++) {
+        const row = document.createElement('tr');
+        for (let j = 0; j < tableData[i].length; j++) {
+            const cellData = tableData[i][j];
+            const cell = document.createElement('td');
+
+            cell.textContent = cellData.text || '';
+
+            // Apply styles if they exist
+            if (cellData.style) {
+                Object.assign(cell.style, cellData.style);
+            }
+
+            row.appendChild(cell);
+        }
+        table.appendChild(row);
+    }
+
+    // Handle merged cells
+    mergedCells.forEach(merge => {
+        const { row, column, numRows, numColumns } = merge;
+
+        const cell = table.rows[row].cells[column];
+        cell.rowSpan = numRows;
+        cell.colSpan = numColumns;
+
+        for (let i = 0; i < numRows; i++) {
+            for (let j = 0; j < numColumns; j++) {
+                if (i !== 0 || j !== 0) {
+                    table.rows[row + i].deleteCell(column + j);
+                }
+            }
+        }
+    });
+
+    container.appendChild(table);
+}
