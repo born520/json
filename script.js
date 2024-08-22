@@ -12,14 +12,21 @@ function renderTable(data) {
     const tableData = data.tableData;
     const mergedCells = data.mergedCells;
 
+    const rowspanTracker = []; // 각 열에 대해 rowspan이 진행 중인지 추적
+
     tableData.forEach((rowData, rowIndex) => {
         const row = document.createElement('tr');
+        let colIndexOffset = 0; // 병합된 셀로 인해 발생하는 열 인덱스 오프셋
+
         rowData.forEach((cellData, colIndex) => {
-            // 기존에 병합된 셀을 무시하기 위한 로직
-            if (row.children[colIndex]) {
-                return;
+            const actualColIndex = colIndex + colIndexOffset;
+
+            // 이미 rowspan에 의해 차지된 셀 건너뛰기
+            while (rowspanTracker[actualColIndex] > 0) {
+                rowspanTracker[actualColIndex]--;
+                colIndexOffset++;
             }
-            
+
             if (cellData !== null) {
                 const cell = document.createElement('td');
                 cell.textContent = cellData.text || '';
@@ -31,16 +38,20 @@ function renderTable(data) {
                 // 병합 정보에 따라 셀의 병합 적용
                 const mergeInfo = mergedCells.find(merge => merge.row === rowIndex && merge.column === colIndex);
                 if (mergeInfo) {
-                    if (mergeInfo.numRows > 1) cell.rowSpan = mergeInfo.numRows;
-                    if (mergeInfo.numColumns > 1) cell.colSpan = mergeInfo.numColumns;
+                    if (mergeInfo.numRows > 1) {
+                        cell.rowSpan = mergeInfo.numRows;
+                        rowspanTracker[actualColIndex] = mergeInfo.numRows - 1;
+                    }
+                    if (mergeInfo.numColumns > 1) {
+                        cell.colSpan = mergeInfo.numColumns;
+                        colIndexOffset += mergeInfo.numColumns - 1;
+                    }
                 }
 
                 row.appendChild(cell);
-            } else {
-                // null 값을 가진 경우, 병합된 셀이라 간주하고 건너뜀
-                row.appendChild(document.createElement('td'));
             }
         });
+
         table.appendChild(row);
     });
 
