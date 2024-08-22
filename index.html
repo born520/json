@@ -9,54 +9,49 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
             background-color: #ffffff;
         }
 
         .container {
+            width: 100%;
+            max-width: 1200px;
             padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
+            background-color: #f9f9f9;
         }
 
         table {
             width: 100%;
-            max-width: 1200px;
             border-collapse: collapse;
-            table-layout: auto;
-            margin: 0 auto;
         }
 
         th, td {
             border: 1px solid #000;
-            padding: 8px;
+            padding: 10px;
             text-align: center;
-            vertical-align: middle;
         }
 
         th {
             background-color: #2f7b7a;
             color: white;
-            font-weight: bold;
         }
 
-        .title-row {
+        .header-row {
             background-color: #184d47;
             color: white;
-            font-weight: bold;
         }
 
         .merge-row {
             background-color: #bfbfbf;
         }
 
-        /* 행 병합 스타일 */
         .rowspan {
             vertical-align: middle;
         }
 
-        /* 열 병합 스타일 */
         .colspan {
             text-align: center;
         }
@@ -65,7 +60,7 @@
 <body>
     <div class="container">
         <table>
-            <tr class="title-row">
+            <tr class="header-row">
                 <th rowspan="2">Season</th>
                 <th rowspan="2">Cost Type</th>
                 <th>1베드룸 레이크뷰</th>
@@ -75,7 +70,7 @@
                 <th>4베드룸 가든</th>
                 <th>4베드룸 레이크뷰</th>
             </tr>
-            <tr class="title-row">
+            <tr class="header-row">
                 <th>$150</th>
                 <th>$200</th>
                 <th>$300</th>
@@ -85,7 +80,7 @@
             </tr>
             <tr>
                 <td rowspan="4" class="merge-row">24. 09/01 ~ 24. 12/21</td>
-                <td class="merge-row">BB</td>
+                <td>BB</td>
                 <td>$150</td>
                 <td>$200</td>
                 <td>$300</td>
@@ -94,7 +89,7 @@
                 <td>$405</td>
             </tr>
             <tr>
-                <td class="merge-row">BX1</td>
+                <td>BX1</td>
                 <td>$246</td>
                 <td>$392</td>
                 <td>$588</td>
@@ -103,7 +98,7 @@
                 <td>$799</td>
             </tr>
             <tr>
-                <td class="merge-row">BX2</td>
+                <td>BX2</td>
                 <td>$224</td>
                 <td>$348</td>
                 <td>$522</td>
@@ -112,7 +107,7 @@
                 <td>$711</td>
             </tr>
             <tr>
-                <td class="merge-row">HB</td>
+                <td>HB</td>
                 <td>$220</td>
                 <td>$340</td>
                 <td>$510</td>
@@ -122,7 +117,7 @@
             </tr>
             <tr>
                 <td rowspan="4" class="merge-row">24. 12/22 ~ 24. 12/31 (High Season)</td>
-                <td class="merge-row">BB</td>
+                <td>BB</td>
                 <td>$220</td>
                 <td>$290</td>
                 <td>$435</td>
@@ -131,7 +126,7 @@
                 <td>$595</td>
             </tr>
             <tr>
-                <td class="merge-row">BX1</td>
+                <td>BX1</td>
                 <td>$316</td>
                 <td>$482</td>
                 <td>$723</td>
@@ -140,7 +135,7 @@
                 <td>$979</td>
             </tr>
             <tr>
-                <td class="merge-row">BX2</td>
+                <td>BX2</td>
                 <td>$294</td>
                 <td>$438</td>
                 <td>$657</td>
@@ -149,7 +144,7 @@
                 <td>$891</td>
             </tr>
             <tr>
-                <td class="merge-row">HB</td>
+                <td>HB</td>
                 <td>$290</td>
                 <td>$430</td>
                 <td>$645</td>
@@ -164,6 +159,33 @@
             <tr>
                 <td colspan="2" class="merge-row">추가인원 (아동 No Bed)</td>
                 <td colspan="6" class="colspan">유아 (만 4세미만) 유아 2명까지 무료</td>
+            </tr>
+            <tr>
+                <td colspan="2" class="merge-row">유아 (만 4세미만) 유아 2명까지 무료</td>
+                <td>BB</td>
+                <td>$21</td>
+                <td>BX1</td>
+                <td>$59</td>
+                <td>BX2</td>
+                <td>$49</td>
+            </tr>
+            <tr>
+                <td colspan="2" class="merge-row">아동 (만 4세이상 ~ 만 12세미만)</td>
+                <td>HB</td>
+                <td>$41</td>
+                <td>HX1</td>
+                <td>$79</td>
+                <td>HX2</td>
+                <td>$69</td>
+            </tr>
+            <tr>
+                <td colspan="2" class="merge-row">유아 2명까지 무료</td>
+                <td>AI</td>
+                <td>$68</td>
+                <td>AX1</td>
+                <td>$106</td>
+                <td>AX2</td>
+                <td>$96</td>
             </tr>
         </table>
     </div>
