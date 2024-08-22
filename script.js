@@ -12,7 +12,6 @@ function renderTable(data) {
     const tableData = data.tableData;
     const mergedCells = data.mergedCells;
 
-    // Create table rows and cells
     for (let i = 0; i < tableData.length; i++) {
         const row = document.createElement('tr');
         for (let j = 0; j < tableData[i].length; j++) {
@@ -22,7 +21,6 @@ function renderTable(data) {
             if (cellData) {
                 cell.textContent = cellData.text || '';
 
-                // Apply styles if they exist
                 if (cellData.style) {
                     Object.assign(cell.style, cellData.style);
                 }
@@ -36,7 +34,6 @@ function renderTable(data) {
         table.appendChild(row);
     }
 
-    // Handle merged cells
     mergedCells.forEach(merge => {
         const { row, column, numRows, numColumns } = merge;
 
@@ -48,9 +45,11 @@ function renderTable(data) {
             for (let j = column; j < column + numColumns; j++) {
                 if (i === row && j === column) continue;
 
-                const targetRow = table.rows[i];
-                if (targetRow && targetRow.cells[j]) {
-                    targetRow.cells[j].remove();
+                if (table.rows[i]) {
+                    const targetRow = table.rows[i];
+                    if (targetRow && targetRow.cells[j]) {
+                        targetRow.cells[j].remove();
+                    }
                 }
             }
         }
