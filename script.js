@@ -10,28 +10,29 @@ function renderTable(data) {
     
     data.tableData.forEach((rowData, rowIndex) => {
         const row = table.insertRow();
-
         let cellIndex = 0;
 
-        rowData.forEach((cellData) => {
-            let cell;
+        rowData.forEach((cellData, colIndex) => {
+            if (cellData) {
+                const cell = row.insertCell(cellIndex);
 
-            // 병합된 셀의 처리
-            const mergedCell = data.mergedCells.find(mc => mc.row === rowIndex + 1 && mc.column === cellIndex + 1);
+                // 병합된 셀 처리
+                const mergedCell = data.mergedCells.find(mc => mc.row === rowIndex + 1 && mc.column === colIndex + 1);
 
-            if (mergedCell) {
-                cell = row.insertCell(-1);
-                cell.rowSpan = mergedCell.numRows;
-                cell.colSpan = mergedCell.numColumns;
-                cell.innerHTML = cellData.richText || cellData.text;
-                applyStyles(cell, rowIndex, cellIndex, data);
-                
-                // 병합된 셀 범위만큼 인덱스 증가
-                cellIndex += mergedCell.numColumns;
+                if (mergedCell) {
+                    cell.rowSpan = mergedCell.numRows;
+                    cell.colSpan = mergedCell.numColumns;
+                    cell.innerHTML = cellData.richText || cellData.text;
+                    applyStyles(cell, rowIndex, colIndex, data);
+                    
+                    // 병합된 셀 범위만큼 인덱스 증가
+                    cellIndex += mergedCell.numColumns;
+                } else {
+                    cell.innerHTML = cellData.richText || cellData.text;
+                    applyStyles(cell, rowIndex, colIndex, data);
+                    cellIndex++;
+                }
             } else {
-                cell = row.insertCell(-1);
-                cell.innerHTML = cellData.richText || cellData.text;
-                applyStyles(cell, rowIndex, cellIndex, data);
                 cellIndex++;
             }
         });
@@ -40,12 +41,16 @@ function renderTable(data) {
     document.body.appendChild(table);
 }
 
-function applyStyles(cell, rowIndex, cellIndex, data) {
-    cell.style.backgroundColor = data.backgrounds[rowIndex][cellIndex];
-    cell.style.color = data.fontColors[rowIndex][cellIndex];
-    cell.style.fontWeight = data.fontWeights[rowIndex][cellIndex];
-    cell.style.fontStyle = data.fontStyles[rowIndex][cellIndex];
-    cell.style.fontSize = data.fontSizes[rowIndex][cellIndex] + 'px';
-    cell.style.textAlign = data.horizontalAlignments[rowIndex][cellIndex];
-    cell.style.verticalAlign = data.verticalAlignments[rowIndex][cellIndex];
+function applyStyles(cell, rowIndex, colIndex, data) {
+    const styleData = data.styles.find(s => s.row === rowIndex + 1 && s.column === colIndex + 1);
+
+    if (styleData) {
+        cell.style.backgroundColor = styleData.backgroundColor;
+        cell.style.color = styleData.fontColor;
+        cell.style.fontWeight = styleData.fontWeight;
+        cell.style.fontStyle = styleData.fontStyle;
+        cell.style.fontSize = styleData.fontSize + 'px';
+        cell.style.textAlign = styleData.textAlign;
+        cell.style.verticalAlign = styleData.verticalAlign;
+    }
 }
