@@ -10,19 +10,16 @@ function renderTable(data) {
     
     data.tableData.forEach((rowData, rowIndex) => {
         const row = table.insertRow();
-        let cellIndex = 0; // 셀 삽입 위치를 추적
+        let cellIndex = 0;
 
         rowData.forEach((cellData, colIndex) => {
-            // 병합된 셀 여부를 확인하기 위해 병합된 셀 목록 검색
             const mergedCell = data.mergedCells ? data.mergedCells.find(mc => mc.row === rowIndex + 1 && mc.column === colIndex + 1) : null;
 
             if (mergedCell) {
-                // 병합된 셀의 경우, 해당 위치만큼 셀을 미리 건너뜀
                 while (row.cells[cellIndex]) {
                     cellIndex++;
                 }
 
-                // 셀 삽입 시 인덱스 범위 확인
                 if (cellIndex <= row.cells.length) {
                     const cell = row.insertCell(cellIndex);
                     cell.rowSpan = mergedCell.numRows;
@@ -30,16 +27,12 @@ function renderTable(data) {
                     cell.innerHTML = cellData.richText || cellData.text || '';
                     applyStyles(cell, rowIndex, colIndex, data);
                 }
-
-                // 병합된 셀의 경우, 해당 범위만큼 cellIndex 증가
                 cellIndex += mergedCell.numColumns;
             } else {
-                // 이미 병합된 셀이 있는 경우 해당 인덱스 건너뜀
                 while (row.cells[cellIndex]) {
                     cellIndex++;
                 }
 
-                // 셀 삽입 시 인덱스 범위 확인 후 삽입
                 if (cellIndex <= row.cells.length) {
                     const cell = row.insertCell(cellIndex);
                     cell.innerHTML = cellData.richText || cellData.text || '';
