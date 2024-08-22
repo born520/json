@@ -7,14 +7,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
 function renderTable(data) {
     const table = document.createElement('table');
-
+    
     data.tableData.forEach((rowData, rowIndex) => {
         const row = table.insertRow();
 
-        rowData.forEach((cellData, cellIndex) => {
+        let cellIndex = 0;
+
+        rowData.forEach((cellData) => {
             let cell;
 
-            // Check if cell is part of a merged cell
+            // 병합된 셀의 처리
             const mergedCell = data.mergedCells.find(mc => mc.row === rowIndex + 1 && mc.column === cellIndex + 1);
 
             if (mergedCell) {
@@ -23,10 +25,14 @@ function renderTable(data) {
                 cell.colSpan = mergedCell.numColumns;
                 cell.innerHTML = cellData.richText || cellData.text;
                 applyStyles(cell, rowIndex, cellIndex, data);
-            } else if (!row.cells[cellIndex]) {
+                
+                // 병합된 셀 범위만큼 인덱스 증가
+                cellIndex += mergedCell.numColumns;
+            } else {
                 cell = row.insertCell(-1);
                 cell.innerHTML = cellData.richText || cellData.text;
                 applyStyles(cell, rowIndex, cellIndex, data);
+                cellIndex++;
             }
         });
     });
