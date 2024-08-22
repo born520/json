@@ -1,14 +1,20 @@
 body {
     font-family: Arial, sans-serif;
     margin: 0;
-    padding: 20px;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f9f9f9; /* 배경 색을 좀 더 부드럽게 */
 }
 
 table {
     width: 100%;
     max-width: 1200px;
     border-collapse: collapse;
-    margin: 0 auto;
+    table-layout: fixed; /* 고정된 테이블 레이아웃 */
+    margin: 20px; /* 상하 좌우에 여백 추가 */
 }
 
 td, th {
@@ -17,6 +23,7 @@ td, th {
     text-align: center;
     vertical-align: middle;
     word-wrap: break-word; /* 긴 텍스트 줄 바꿈 */
+    font-size: 14px; /* 글자 크기 조정 */
 }
 
 th {
@@ -30,4 +37,11 @@ tr:nth-child(even) {
 
 tr:hover {
     background-color: #e2e2e2;
+}
+
+h1 {
+    text-align: center;
+    font-size: 24px;
+    color: #14766a;
+    margin-bottom: 20px;
 }
