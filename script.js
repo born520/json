@@ -34,17 +34,26 @@ function renderTable(data) {
     // Handle merged cells
     mergedCells.forEach(merge => {
         const { row, column, numRows, numColumns } = merge;
-        const cell = table.rows[row].cells[column];
-        cell.rowSpan = numRows;
-        cell.colSpan = numColumns;
 
-        // Remove cells that are merged into this one
-        for (let i = row; i < row + numRows; i++) {
-            for (let j = column; j < column + numColumns; j++) {
-                if (i !== row || j !== column) {
-                    table.rows[i].deleteCell(column);
+        // Check if the row and column indices are within bounds
+        if (table.rows[row] && table.rows[row].cells[column]) {
+            const cell = table.rows[row].cells[column];
+            cell.rowSpan = numRows;
+            cell.colSpan = numColumns;
+
+            // Remove cells that are merged into this one
+            for (let i = row; i < row + numRows; i++) {
+                for (let j = column; j < column + numColumns; j++) {
+                    // Ensure the cell exists before trying to delete it
+                    if (i !== row || j !== column) {
+                        if (table.rows[i] && table.rows[i].cells[j]) {
+                            table.rows[i].deleteCell(j);
+                        }
+                    }
                 }
             }
+        } else {
+            console.error(`Cell to be merged not found at row ${row}, column ${column}`);
         }
     });
 
