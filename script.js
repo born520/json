@@ -42,8 +42,6 @@ function renderTable(data) {
 
             console.log(`Merging cells at row ${startRow}, column ${startCol} spanning ${numRows} rows and ${numCols} columns`);
 
-            if (startRow >= table.rows.length || startCol >= table.rows[startRow].cells.length) return;
-
             const cell = table.rows[startRow].cells[startCol];
             cell.rowSpan = numRows;
             cell.colSpan = numCols;
