@@ -40,6 +40,8 @@ function renderTable(data) {
             const numRows = merge.numRows;
             const numCols = merge.numColumns;
 
+            console.log(`Merging cells at row ${startRow}, column ${startCol} spanning ${numRows} rows and ${numCols} columns`);
+
             if (startRow >= table.rows.length || startCol >= table.rows[startRow].cells.length) return;
 
             const cell = table.rows[startRow].cells[startCol];
@@ -50,8 +52,14 @@ function renderTable(data) {
             for (let i = 0; i < numRows; i++) {
                 for (let j = 0; j < numCols; j++) {
                     if (i === 0 && j === 0) continue; // Skip the original cell
-                    if (startRow + i < table.rows.length && startCol + j < table.rows[startRow + i].cells.length) {
-                        table.rows[startRow + i].deleteCell(startCol + j);
+                    const rowToDeleteFrom = startRow + i;
+                    const colToDelete = startCol + j;
+
+                    if (rowToDeleteFrom < table.rows.length && colToDelete < table.rows[rowToDeleteFrom].cells.length) {
+                        console.log(`Deleting cell at row ${rowToDeleteFrom}, column ${colToDelete}`);
+                        table.rows[rowToDeleteFrom].deleteCell(colToDelete);
+                    } else {
+                        console.warn(`Cannot delete cell at row ${rowToDeleteFrom}, column ${colToDelete} - out of range`);
                     }
                 }
             }
