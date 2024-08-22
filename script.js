@@ -16,18 +16,19 @@ function renderTable(data) {
 
         const table = document.createElement('table');
 
+        // Render cells without merging
         tableData.forEach((rowData, rowIndex) => {
             const row = table.insertRow(-1);
             rowData.forEach((cellData, cellIndex) => {
                 const cell = row.insertCell(-1);
-                cell.innerHTML = cellData.text;
-                cell.style.backgroundColor = backgrounds[rowIndex][cellIndex];
-                cell.style.color = fontColors[rowIndex][cellIndex];
-                cell.style.textAlign = horizontalAlignments[rowIndex][cellIndex];
-                cell.style.verticalAlign = verticalAlignments[rowIndex][cellIndex];
-                cell.style.fontWeight = fontWeights[rowIndex][cellIndex];
-                cell.style.fontStyle = fontStyles[rowIndex][cellIndex];
-                cell.style.fontSize = fontSizes[rowIndex][cellIndex] + 'px';
+                cell.innerHTML = cellData.text || ""; // Ensure text is set
+                cell.style.backgroundColor = backgrounds[rowIndex][cellIndex] || "transparent";
+                cell.style.color = fontColors[rowIndex][cellIndex] || "#000";
+                cell.style.textAlign = horizontalAlignments[rowIndex][cellIndex] || "left";
+                cell.style.verticalAlign = verticalAlignments[rowIndex][cellIndex] || "top";
+                cell.style.fontWeight = fontWeights[rowIndex][cellIndex] || "normal";
+                cell.style.fontStyle = fontStyles[rowIndex][cellIndex] || "normal";
+                cell.style.fontSize = (fontSizes[rowIndex][cellIndex] || 10) + 'px';
                 if (strikethroughs[rowIndex][cellIndex]) {
                     cell.style.textDecoration = 'line-through';
                 }
@@ -43,8 +44,8 @@ function renderTable(data) {
 
             console.log(`Merging cells at row ${startRow}, column ${startCol} spanning ${numRows} rows and ${numCols} columns`);
 
-            const cell = table.rows[startRow].cells[startCol];
-            if (cell) {
+            if (table.rows[startRow] && table.rows[startRow].cells[startCol]) {
+                const cell = table.rows[startRow].cells[startCol];
                 cell.rowSpan = numRows;
                 cell.colSpan = numCols;
 
