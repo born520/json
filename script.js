@@ -1,39 +1,65 @@
-document.addEventListener("DOMContentLoaded", function () {
-    const table = document.getElementById('data-table');
-
+document.addEventListener('DOMContentLoaded', () => {
     fetch('data.json')
         .then(response => response.json())
-        .then(data => {
-            renderTable(data, table);
-        })
-        .catch(error => {
-            console.error('Error loading JSON data:', error);
-        });
+        .then(data => renderTable(data))
+        .catch(error => console.error('Error loading JSON data:', error));
 });
 
-function renderTable(data, table) {
-    const { headers, rows } = data;
+function renderTable(data) {
+    const container = document.getElementById('table-container');
+    const table = document.createElement('table');
 
-    const thead = table.createTHead();
-    const tbody = table.createTBody();
+    const tableData = data.tableData;
+    const backgrounds = data.backgrounds;
+    const fontColors = data.fontColors;
+    const horizontalAlignments = data.horizontalAlignments;
+    const verticalAlignments = data.verticalAlignments;
+    const fontWeights = data.fontWeights;
+    const fontStyles = data.fontStyles;
+    const fontSizes = data.fontSizes;
+    const mergedCells = data.mergedCells;
 
-    const headerRow = thead.insertRow();
-    headers.forEach(header => {
-        const th = document.createElement('th');
-        th.colSpan = header.colspan || 1;
-        th.rowSpan = header.rowspan || 1;
-        th.innerText = header.text;
-        headerRow.appendChild(th);
+    const rowCount = tableData.length;
+    const colCount = tableData[0].length;
+
+    // Create table rows and cells
+    for (let i = 0; i < rowCount; i++) {
+        const row = document.createElement('tr');
+        for (let j = 0; j < colCount; j++) {
+            const cellData = tableData[i][j];
+            const cell = document.createElement('td');
+            cell.textContent = cellData.text;
+
+            // Apply styles
+            cell.style.backgroundColor = backgrounds[i][j];
+            cell.style.color = fontColors[i][j];
+            cell.style.textAlign = horizontalAlignments[i][j];
+            cell.style.verticalAlign = verticalAlignments[i][j];
+            cell.style.fontWeight = fontWeights[i][j];
+            cell.style.fontStyle = fontStyles[i][j];
+            cell.style.fontSize = `${fontSizes[i][j]}px`;
+
+            row.appendChild(cell);
+        }
+        table.appendChild(row);
+    }
+
+    // Handle merged cells
+    mergedCells.forEach(merge => {
+        const { row, column, numRows, numColumns } = merge;
+        const cell = table.rows[row - 1].cells[column - 1];
+        cell.rowSpan = numRows;
+        cell.colSpan = numColumns;
+
+        // Remove the merged cells
+        for (let i = 0; i < numRows; i++) {
+            for (let j = 0; j < numColumns; j++) {
+                if (i > 0 || j > 0) {
+                    table.rows[row - 1 + i].deleteCell(column - 1 + j);
+                }
+            }
+        }
     });
 
-    rows.forEach(row => {
-        const tr = tbody.insertRow();
-        row.forEach(cell => {
-            const td = document.createElement('td');
-            td.colSpan = cell.colspan || 1;
-            td.rowSpan = cell.rowspan || 1;
-            td.innerText = cell.text;
-            tr.appendChild(td);
-        });
-    });
+    container.appendChild(table);
 }
