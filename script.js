@@ -17,6 +17,11 @@ function renderTable(data) {
             const mergedCell = data.mergedCells ? data.mergedCells.find(mc => mc.row === rowIndex + 1 && mc.column === colIndex + 1) : null;
 
             if (mergedCell) {
+                // 셀을 추가하기 전에 해당 위치에 이미 병합된 셀이 존재하는지 확인
+                while (row.cells[cellIndex]) {
+                    cellIndex++;
+                }
+
                 const cell = row.insertCell(cellIndex);
                 cell.rowSpan = mergedCell.numRows;
                 cell.colSpan = mergedCell.numColumns;
