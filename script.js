@@ -36,9 +36,12 @@ function renderTable(data) {
                     cellIndex++;
                 }
 
-                const cell = row.insertCell(cellIndex);
-                cell.innerHTML = cellData.richText || cellData.text || '';
-                applyStyles(cell, rowIndex, colIndex, data);
+                // 셀 삽입 시 인덱스 범위 확인 후 삽입
+                if (cellIndex < row.cells.length || cellIndex === row.cells.length) {
+                    const cell = row.insertCell(cellIndex);
+                    cell.innerHTML = cellData.richText || cellData.text || '';
+                    applyStyles(cell, rowIndex, colIndex, data);
+                }
                 cellIndex++;
             }
         });
