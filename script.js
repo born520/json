@@ -15,6 +15,11 @@ function renderTable(data) {
     tableData.forEach((rowData, rowIndex) => {
         const row = document.createElement('tr');
         rowData.forEach((cellData, colIndex) => {
+            // 기존에 병합된 셀을 무시하기 위한 로직
+            if (row.children[colIndex]) {
+                return;
+            }
+            
             if (cellData !== null) {
                 const cell = document.createElement('td');
                 cell.textContent = cellData.text || '';
@@ -31,10 +36,9 @@ function renderTable(data) {
                 }
 
                 row.appendChild(cell);
-            } else if (!rowData[colIndex - 1] || !mergedCells.find(merge => merge.row === rowIndex && merge.column === colIndex - 1)) {
-                // null 값을 가진 경우, 그 자리에 빈 셀을 넣어줍니다.
-                const emptyCell = document.createElement('td');
-                row.appendChild(emptyCell);
+            } else {
+                // null 값을 가진 경우, 병합된 셀이라 간주하고 건너뜀
+                row.appendChild(document.createElement('td'));
             }
         });
         table.appendChild(row);
