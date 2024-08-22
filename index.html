@@ -57,11 +57,28 @@
                 const data = await response.json();
 
                 const table = document.getElementById('dataTable');
+                const mergedCells = data.mergedCells;
+
                 data.tableData.forEach((row, rowIndex) => {
                     const tr = document.createElement('tr');
                     row.forEach((cell, colIndex) => {
                         const td = rowIndex === 0 ? document.createElement('th') : document.createElement('td');
                         td.innerText = cell.text;
+
+                        // 셀 병합 처리
+                        const mergedCell = mergedCells.find(mc => mc.row === rowIndex && mc.column === colIndex);
+                        if (mergedCell) {
+                            if (mergedCell.numRows > 1) td.rowSpan = mergedCell.numRows;
+                            if (mergedCell.numColumns > 1) td.colSpan = mergedCell.numColumns;
+                        } else {
+                            // 이미 병합된 셀의 내부는 빈 셀로 처리
+                            const isCoveredCell = mergedCells.some(mc => 
+                                rowIndex >= mc.row && rowIndex < mc.row + mc.numRows &&
+                                colIndex >= mc.column && colIndex < mc.column + mc.numColumns
+                            );
+                            if (isCoveredCell) return;
+                        }
+
                         tr.appendChild(td);
                     });
                     table.appendChild(tr);
