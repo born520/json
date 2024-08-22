@@ -17,16 +17,19 @@ function renderTable(data) {
             const mergedCell = data.mergedCells ? data.mergedCells.find(mc => mc.row === rowIndex + 1 && mc.column === colIndex + 1) : null;
 
             if (mergedCell) {
-                // 셀을 추가하기 전에 해당 위치에 이미 병합된 셀이 존재하는지 확인
+                // 병합된 셀의 경우, 해당 위치만큼 셀을 미리 건너뜀
                 while (row.cells[cellIndex]) {
                     cellIndex++;
                 }
 
-                const cell = row.insertCell(cellIndex);
-                cell.rowSpan = mergedCell.numRows;
-                cell.colSpan = mergedCell.numColumns;
-                cell.innerHTML = cellData.richText || cellData.text || '';
-                applyStyles(cell, rowIndex, colIndex, data);
+                // 셀 삽입 시 인덱스 범위 확인
+                if (cellIndex <= row.cells.length) {
+                    const cell = row.insertCell(cellIndex);
+                    cell.rowSpan = mergedCell.numRows;
+                    cell.colSpan = mergedCell.numColumns;
+                    cell.innerHTML = cellData.richText || cellData.text || '';
+                    applyStyles(cell, rowIndex, colIndex, data);
+                }
 
                 // 병합된 셀의 경우, 해당 범위만큼 cellIndex 증가
                 cellIndex += mergedCell.numColumns;
@@ -37,7 +40,7 @@ function renderTable(data) {
                 }
 
                 // 셀 삽입 시 인덱스 범위 확인 후 삽입
-                if (cellIndex < row.cells.length || cellIndex === row.cells.length) {
+                if (cellIndex <= row.cells.length) {
                     const cell = row.insertCell(cellIndex);
                     cell.innerHTML = cellData.richText || cellData.text || '';
                     applyStyles(cell, rowIndex, colIndex, data);
