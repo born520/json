@@ -8,24 +8,31 @@
         body {
             font-family: Arial, sans-serif;
             margin: 0;
-            padding: 20px;
+            padding: 0;
             background-color: #ffffff;
+        }
+
+        .container {
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
         }
 
         table {
             width: 100%;
             max-width: 1200px;
             border-collapse: collapse;
-            margin: 0 auto; /* 테이블을 가운데 정렬 */
-            table-layout: fixed;
+            table-layout: auto;
+            margin: 0 auto;
         }
 
-        td, th {
+        th, td {
+            border: 1px solid #000;
             padding: 8px;
-            border: 1px solid #000000;
             text-align: center;
             vertical-align: middle;
-            word-wrap: break-word;
         }
 
         th {
@@ -34,84 +41,140 @@
             font-weight: bold;
         }
 
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-
-        tr:hover {
-            background-color: #e2e2e2;
-        }
-
         .title-row {
             background-color: #184d47;
             color: white;
             font-weight: bold;
-            font-size: 18px;
-            text-align: center;
         }
 
         .merge-row {
             background-color: #bfbfbf;
         }
+
+        /* 행 병합 스타일 */
+        .rowspan {
+            vertical-align: middle;
+        }
+
+        /* 열 병합 스타일 */
+        .colspan {
+            text-align: center;
+        }
     </style>
 </head>
 <body>
-
-    <table id="dataTable">
-        <!-- 데이터가 로드된 후 여기에 테이블이 동적으로 추가됩니다. -->
-    </table>
-
-    <script>
-        async function fetchDataAndRenderTable() {
-            try {
-                const response = await fetch('data.json');
-                const data = await response.json();
-
-                const table = document.getElementById('dataTable');
-                const mergedCells = data.mergedCells;
-
-                data.tableData.forEach((row, rowIndex) => {
-                    const tr = document.createElement('tr');
-                    row.forEach((cell, colIndex) => {
-                        // 해당 셀이 이미 병합된 셀에 포함되는지 확인
-                        const isCoveredCell = mergedCells.some(mc => 
-                            rowIndex > mc.row && rowIndex < mc.row + mc.numRows &&
-                            colIndex > mc.column && colIndex < mc.column + mc.numColumns
-                        );
-                        if (isCoveredCell) {
-                            return;
-                        }
-
-                        const td = rowIndex === 0 ? document.createElement('th') : document.createElement('td');
-                        td.innerText = cell.text;
-
-                        // 셀 병합 처리
-                        const mergedCell = mergedCells.find(mc => mc.row === rowIndex && mc.column === colIndex);
-                        if (mergedCell) {
-                            if (mergedCell.numRows > 1) td.rowSpan = mergedCell.numRows;
-                            if (mergedCell.numColumns > 1) td.colSpan = mergedCell.numColumns;
-                        }
-
-                        // 스타일 적용
-                        if (rowIndex === 0) {
-                            td.classList.add('title-row');
-                        }
-                        if (rowIndex > 0 && colIndex === 0) {
-                            td.classList.add('merge-row');
-                        }
-
-                        tr.appendChild(td);
-                    });
-                    table.appendChild(tr);
-                });
-            } catch (error) {
-                console.error('Error fetching or rendering table data:', error);
-            }
-        }
-
-        // 페이지 로드 시 데이터 가져오기 및 테이블 렌더링
-        fetchDataAndRenderTable();
-    </script>
-
+    <div class="container">
+        <table>
+            <tr class="title-row">
+                <th rowspan="2">Season</th>
+                <th rowspan="2">Cost Type</th>
+                <th colspan="5">1베드룸 레이크뷰</th>
+                <th colspan="5">2베드룸 레이크뷰</th>
+                <th colspan="5">3베드룸 가든</th>
+                <th colspan="5">3베드룸 레이크뷰</th>
+                <th colspan="5">4베드룸 가든</th>
+                <th colspan="5">4베드룸 레이크뷰</th>
+            </tr>
+            <tr class="title-row">
+                <th>$150</th>
+                <th>$200</th>
+                <th>$300</th>
+                <th>$310</th>
+                <th>$360</th>
+                <th>$405</th>
+                <!-- 나머지 헤더 항목들을 추가 -->
+            </tr>
+            <tr>
+                <td rowspan="4" class="merge-row">24. 09/01 ~ 24. 12/21</td>
+                <td class="merge-row">BB</td>
+                <td>$150</td>
+                <td>$200</td>
+                <td>$300</td>
+                <td>$310</td>
+                <td>$360</td>
+                <td>$405</td>
+                <!-- 나머지 데이터 항목들을 추가 -->
+            </tr>
+            <tr>
+                <td class="merge-row">BX1</td>
+                <td>$246</td>
+                <td>$392</td>
+                <td>$588</td>
+                <td>$598</td>
+                <td>$754</td>
+                <td>$799</td>
+                <!-- 나머지 데이터 항목들을 추가 -->
+            </tr>
+            <tr>
+                <td class="merge-row">BX2</td>
+                <td>$224</td>
+                <td>$348</td>
+                <td>$522</td>
+                <td>$532</td>
+                <td>$666</td>
+                <td>$711</td>
+                <!-- 나머지 데이터 항목들을 추가 -->
+            </tr>
+            <tr>
+                <td class="merge-row">HB</td>
+                <td>$220</td>
+                <td>$340</td>
+                <td>$510</td>
+                <td>$520</td>
+                <td>$650</td>
+                <td>$695</td>
+                <!-- 나머지 데이터 항목들을 추가 -->
+            </tr>
+            <tr>
+                <td rowspan="4" class="merge-row">24. 12/22 ~ 24. 12/31 (High Season)</td>
+                <td class="merge-row">BB</td>
+                <td>$220</td>
+                <td>$290</td>
+                <td>$435</td>
+                <td>$450</td>
+                <td>$525</td>
+                <td>$595</td>
+                <!-- 나머지 데이터 항목들을 추가 -->
+            </tr>
+            <tr>
+                <td class="merge-row">BX1</td>
+                <td>$316</td>
+                <td>$482</td>
+                <td>$723</td>
+                <td>$738</td>
+                <td>$909</td>
+                <td>$979</td>
+                <!-- 나머지 데이터 항목들을 추가 -->
+            </tr>
+            <tr>
+                <td class="merge-row">BX2</td>
+                <td>$294</td>
+                <td>$438</td>
+                <td>$657</td>
+                <td>$672</td>
+                <td>$821</td>
+                <td>$891</td>
+                <!-- 나머지 데이터 항목들을 추가 -->
+            </tr>
+            <tr>
+                <td class="merge-row">HB</td>
+                <td>$290</td>
+                <td>$430</td>
+                <td>$645</td>
+                <td>$660</td>
+                <td>$805</td>
+                <td>$875</td>
+                <!-- 나머지 데이터 항목들을 추가 -->
+            </tr>
+            <tr>
+                <td colspan="2" class="merge-row">객실 및 빌라 투숙규정 (총 434 체)</td>
+                <td colspan="25" class="colspan">기준</td>
+            </tr>
+            <tr>
+                <td colspan="2" class="merge-row">추가인원 (아동 No Bed)</td>
+                <td colspan="25" class="colspan">유아 (만 4세미만) 유아 2명까지 무료</td>
+            </tr>
+        </table>
+    </div>
 </body>
 </html>
