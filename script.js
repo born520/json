@@ -1,7 +1,13 @@
 document.addEventListener('DOMContentLoaded', () => {
     fetch('data.json')
         .then(response => response.json())
-        .then(data => renderTable(data))
+        .then(data => {
+            if (Array.isArray(data)) {
+                renderTable(data); // data가 배열인 경우
+            } else {
+                console.error('Unexpected JSON format: data should be an array');
+            }
+        })
         .catch(error => console.error('Error loading JSON data:', error));
 });
 
