@@ -31,7 +31,8 @@ function renderTable(data) {
                 }
 
                 row.appendChild(cell);
-            } else {
+            } else if (!rowData[colIndex - 1] || !mergedCells.find(merge => merge.row === rowIndex && merge.column === colIndex - 1)) {
+                // null 값을 가진 경우, 그 자리에 빈 셀을 넣어줍니다.
                 const emptyCell = document.createElement('td');
                 row.appendChild(emptyCell);
             }
