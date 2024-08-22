@@ -53,11 +53,16 @@ function renderTable(data) {
                     const rowToDeleteFrom = startRow + i;
                     const colToDelete = startCol + j;
 
-                    if (rowToDeleteFrom < table.rows.length && colToDelete < table.rows[rowToDeleteFrom].cells.length) {
-                        console.log(`Deleting cell at row ${rowToDeleteFrom}, column ${colToDelete}`);
-                        table.rows[rowToDeleteFrom].deleteCell(colToDelete);
+                    // Ensure we are within the bounds of the table
+                    if (rowToDeleteFrom < table.rows.length) {
+                        if (colToDelete < table.rows[rowToDeleteFrom].cells.length) {
+                            console.log(`Deleting cell at row ${rowToDeleteFrom}, column ${colToDelete}`);
+                            table.rows[rowToDeleteFrom].deleteCell(colToDelete);
+                        } else {
+                            console.warn(`Cannot delete cell at row ${rowToDeleteFrom}, column ${colToDelete} - column out of range`);
+                        }
                     } else {
-                        console.warn(`Cannot delete cell at row ${rowToDeleteFrom}, column ${colToDelete} - out of range`);
+                        console.warn(`Cannot delete cell at row ${rowToDeleteFrom} - row out of range`);
                     }
                 }
             }
