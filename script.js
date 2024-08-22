@@ -19,14 +19,18 @@ function renderTable(data) {
             const cellData = tableData[i][j];
             const cell = document.createElement('td');
 
-            cell.textContent = cellData.text || '';
+            if (cellData) {
+                cell.textContent = cellData.text || '';
 
-            // Apply styles if they exist
-            if (cellData.style) {
-                Object.assign(cell.style, cellData.style);
+                // Apply styles if they exist
+                if (cellData.style) {
+                    Object.assign(cell.style, cellData.style);
+                }
+
+                row.appendChild(cell);
+            } else {
+                row.appendChild(document.createElement('td'));
             }
-
-            row.appendChild(cell);
         }
         table.appendChild(row);
     }
