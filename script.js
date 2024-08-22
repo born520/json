@@ -35,26 +35,16 @@ function renderTable(data) {
     mergedCells.forEach(merge => {
         const { row, column, numRows, numColumns } = merge;
 
-        // Check if the starting cell exists
-        if (table.rows[row] && table.rows[row].cells[column]) {
-            const cell = table.rows[row].cells[column];
-            cell.rowSpan = numRows;
-            cell.colSpan = numColumns;
+        const cell = table.rows[row].cells[column];
+        cell.rowSpan = numRows;
+        cell.colSpan = numColumns;
 
-            // Remove the cells that are merged into the main cell
-            for (let i = 0; i < numRows; i++) {
-                for (let j = 0; j < numColumns; j++) {
-                    if (i !== 0 || j !== 0) {
-                        const targetRow = row + i;
-                        const targetCol = column + j;
-                        if (table.rows[targetRow] && table.rows[targetRow].cells[targetCol]) {
-                            table.rows[targetRow].deleteCell(targetCol);
-                        }
-                    }
+        for (let i = 0; i < numRows; i++) {
+            for (let j = 0; j < numColumns; j++) {
+                if (i !== 0 || j !== 0) {
+                    table.rows[row + i].deleteCell(column + j);
                 }
             }
-        } else {
-            console.error(`Failed to merge cells at row ${row}, column ${column}`);
         }
     });
 
