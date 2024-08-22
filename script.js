@@ -18,7 +18,7 @@ function renderTable(data) {
             if (cellData !== null) {
                 const cell = document.createElement('td');
                 cell.textContent = cellData.text || '';
-                
+
                 if (cellData.style) {
                     Object.assign(cell.style, cellData.style);
                 }
