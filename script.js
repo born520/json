@@ -11,13 +11,12 @@ function renderTable(data) {
 
     data.tableData.forEach((rowData, rowIndex) => {
         const row = document.createElement('tr');
-        let cellIndex = 0;
 
         rowData.forEach((cellData, colIndex) => {
             if (!cellData) return;
 
             // 병합된 셀 처리
-            const mergedCell = data.mergedCells ? data.mergedCells.find(mc => mc.row === rowIndex + 1 && mc.column === colIndex + 1) : null;
+            const mergedCell = data.mergedCells.find(mc => mc.row === rowIndex + 1 && mc.column === colIndex + 1);
             if (mergedCell) {
                 const cell = document.createElement('td');
                 cell.rowSpan = mergedCell.numRows || 1;
@@ -26,14 +25,12 @@ function renderTable(data) {
 
                 applyStyles(cell, rowIndex, colIndex, data);
                 row.appendChild(cell);
-                cellIndex += mergedCell.numColumns;
-            } else {
+            } else if (!row.querySelector(`td[rowspan][colspan]`)) {
                 const cell = document.createElement('td');
                 cell.innerHTML = cellData.richText || cellData.text || '';
 
                 applyStyles(cell, rowIndex, colIndex, data);
                 row.appendChild(cell);
-                cellIndex++;
             }
         });
 
