@@ -16,17 +16,15 @@ function renderTable(data) {
     for (let i = 0; i < tableData.length; i++) {
         const row = document.createElement('tr');
         for (let j = 0; j < tableData[i].length; j++) {
-            if (tableData[i][j]) {
-                const cell = document.createElement('td');
-                cell.textContent = tableData[i][j].text || '';
+            const cell = document.createElement('td');
+            cell.textContent = tableData[i][j].text || '';
 
-                // Apply styles if they exist
-                if (tableData[i][j].style) {
-                    Object.assign(cell.style, tableData[i][j].style);
-                }
-
-                row.appendChild(cell);
+            // Apply styles if they exist
+            if (tableData[i][j].style) {
+                Object.assign(cell.style, tableData[i][j].style);
             }
+
+            row.appendChild(cell);
         }
         table.appendChild(row);
     }
