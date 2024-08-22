@@ -13,6 +13,7 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
+            background-color: #ffffff;
         }
 
         table {
@@ -62,6 +63,15 @@
                 data.tableData.forEach((row, rowIndex) => {
                     const tr = document.createElement('tr');
                     row.forEach((cell, colIndex) => {
+                        // 해당 셀이 이미 병합된 셀에 포함되는지 확인
+                        const isCoveredCell = mergedCells.some(mc => 
+                            rowIndex > mc.row && rowIndex < mc.row + mc.numRows &&
+                            colIndex > mc.column && colIndex < mc.column + mc.numColumns
+                        );
+                        if (isCoveredCell) {
+                            return;
+                        }
+
                         const td = rowIndex === 0 ? document.createElement('th') : document.createElement('td');
                         td.innerText = cell.text;
 
@@ -70,13 +80,6 @@
                         if (mergedCell) {
                             if (mergedCell.numRows > 1) td.rowSpan = mergedCell.numRows;
                             if (mergedCell.numColumns > 1) td.colSpan = mergedCell.numColumns;
-                        } else {
-                            // 이미 병합된 셀의 내부는 빈 셀로 처리
-                            const isCoveredCell = mergedCells.some(mc => 
-                                rowIndex >= mc.row && rowIndex < mc.row + mc.numRows &&
-                                colIndex >= mc.column && colIndex < mc.column + mc.numColumns
-                            );
-                            if (isCoveredCell) return;
                         }
 
                         tr.appendChild(td);
