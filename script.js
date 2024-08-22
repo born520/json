@@ -1,63 +1,66 @@
 function renderTable(data) {
+    console.log("Starting renderTable function");
+    console.log("Data received:", data);
+
     try {
-        console.log("Starting renderTable function");
-        console.log("Data received:", data);
+        const tableData = data.tableData;
+        const backgrounds = data.backgrounds;
+        const fontColors = data.fontColors;
+        const horizontalAlignments = data.horizontalAlignments;
+        const verticalAlignments = data.verticalAlignments;
+        const fontWeights = data.fontWeights;
+        const fontStyles = data.fontStyles;
+        const fontSizes = data.fontSizes;
+        const strikethroughs = data.strikethroughs;
+        const mergedCells = data.mergedCells;
 
         const table = document.createElement('table');
-
-        data.forEach((rowData, rowIndex) => {
+        tableData.forEach((rowData, rowIndex) => {
             const row = table.insertRow(-1);
-            console.log(`Rendering row ${rowIndex}`, rowData);
-
             rowData.forEach((cellData, cellIndex) => {
                 const cell = row.insertCell(-1);
-                console.log(`Adding cell at row ${rowIndex}, column ${cellIndex}`, cellData);
-
-                cell.innerHTML = cellData.content;
-                if (cellData.colspan) cell.colSpan = cellData.colspan;
-                if (cellData.rowspan) cell.rowSpan = cellData.rowspan;
-
-                console.log(`Cell content: ${cellData.content}, colspan: ${cellData.colspan}, rowspan: ${cellData.rowspan}`);
+                cell.innerHTML = cellData.text;
+                cell.style.backgroundColor = backgrounds[rowIndex][cellIndex];
+                cell.style.color = fontColors[rowIndex][cellIndex];
+                cell.style.textAlign = horizontalAlignments[rowIndex][cellIndex];
+                cell.style.verticalAlign = verticalAlignments[rowIndex][cellIndex];
+                cell.style.fontWeight = fontWeights[rowIndex][cellIndex];
+                cell.style.fontStyle = fontStyles[rowIndex][cellIndex];
+                cell.style.fontSize = fontSizes[rowIndex][cellIndex] + 'px';
+                if (strikethroughs[rowIndex][cellIndex]) {
+                    cell.style.textDecoration = 'line-through';
+                }
             });
         });
 
-        applyMergedCells(table, data);
+        // Apply merged cells
+        mergedCells.forEach((merge) => {
+            const startRow = merge.row;
+            const startCol = merge.column;
+            const numRows = merge.numRows;
+            const numCols = merge.numColumns;
+
+            const cell = table.rows[startRow].cells[startCol];
+            cell.rowSpan = numRows;
+            cell.colSpan = numCols;
+
+            // Remove the cells that were merged
+            for (let i = 0; i < numRows; i++) {
+                for (let j = 0; j < numCols; j++) {
+                    if (i === 0 && j === 0) continue; // Skip the original cell
+                    table.rows[startRow + i].deleteCell(startCol);
+                }
+            }
+        });
+
         document.body.appendChild(table);
     } catch (error) {
         console.error("Error loading JSON data:", error);
     }
 }
 
-function applyMergedCells(table, data) {
-    try {
-        console.log("Applying merged cells");
-
-        data.forEach((rowData, rowIndex) => {
-            rowData.forEach((cellData, cellIndex) => {
-                if (cellData.merged) {
-                    console.log(`Merging cells starting at row ${rowIndex}, column ${cellIndex}`);
-                    const row = table.rows[rowIndex];
-                    const cell = row.cells[cellIndex];
-
-                    if (cellData.merged.colspan) {
-                        console.log(`Setting colspan for row ${rowIndex}, column ${cellIndex} to ${cellData.merged.colspan}`);
-                        cell.colSpan = cellData.merged.colspan;
-                    }
-
-                    if (cellData.merged.rowspan) {
-                        console.log(`Setting rowspan for row ${rowIndex}, column ${cellIndex} to ${cellData.merged.rowspan}`);
-                        cell.rowSpan = cellData.merged.rowspan;
-                    }
-                }
-            });
-        });
-    } catch (error) {
-        console.error("Error applying merged cells:", error);
-    }
-}
-
-// Sample invocation (assuming data is already loaded)
+// Assuming that you have already fetched your JSON data and passed it to this function
 fetch('data.json')
     .then(response => response.json())
     .then(data => renderTable(data))
-    .catch(error => console.error("Error fetching JSON data:", error));
+    .catch(error => console.error('Error fetching JSON:', error));
