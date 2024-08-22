@@ -42,7 +42,10 @@ function renderTable(data) {
         for (let i = 0; i < numRows; i++) {
             for (let j = 0; j < numColumns; j++) {
                 if (i !== 0 || j !== 0) {
-                    table.rows[row + i].deleteCell(column + j);
+                    const targetRow = table.rows[row + i];
+                    if (targetRow && targetRow.cells[column + j]) {
+                        targetRow.deleteCell(column + j);
+                    }
                 }
             }
         }
