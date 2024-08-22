@@ -13,188 +13,82 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            background-color: #ffffff;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 1200px;
-            padding: 20px;
-            background-color: #f9f9f9;
+            background-color: #f8f8f8;
         }
 
         table {
             width: 100%;
+            max-width: 1200px;
             border-collapse: collapse;
+            table-layout: fixed;
         }
 
         th, td {
-            border: 1px solid #000;
-            padding: 10px;
+            padding: 8px;
+            border: 1px solid #dddddd;
             text-align: center;
+            vertical-align: middle;
+            word-wrap: break-word;
         }
 
         th {
-            background-color: #2f7b7a;
+            background-color: #14766a;
             color: white;
         }
 
-        .header-row {
-            background-color: #184d47;
-            color: white;
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
         }
 
-        .merge-row {
-            background-color: #bfbfbf;
-        }
-
-        .rowspan {
-            vertical-align: middle;
-        }
-
-        .colspan {
-            text-align: center;
+        tr:hover {
+            background-color: #e2e2e2;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <table>
-            <thead>
-                <tr class="header-row">
-                    <th rowspan="2">Season</th>
-                    <th rowspan="2">Cost Type</th>
-                    <th colspan="6">1베드룸 레이크뷰 / 2베드룸 레이크뷰 / 3베드룸 가든 / 3베드룸 레이크뷰 / 4베드룸 가든 / 4베드룸 레이크뷰</th>
-                </tr>
-                <tr class="header-row">
-                    <th>$150</th>
-                    <th>$200</th>
-                    <th>$300</th>
-                    <th>$310</th>
-                    <th>$360</th>
-                    <th>$405</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td rowspan="4">24. 09/01 ~ 24. 12/21</td>
-                    <td>BB</td>
-                    <td>$150</td>
-                    <td>$200</td>
-                    <td>$300</td>
-                    <td>$310</td>
-                    <td>$360</td>
-                    <td>$405</td>
-                </tr>
-                <tr>
-                    <td>BX1</td>
-                    <td>$246</td>
-                    <td>$392</td>
-                    <td>$588</td>
-                    <td>$598</td>
-                    <td>$754</td>
-                    <td>$799</td>
-                </tr>
-                <tr>
-                    <td>BX2</td>
-                    <td>$224</td>
-                    <td>$348</td>
-                    <td>$522</td>
-                    <td>$532</td>
-                    <td>$666</td>
-                    <td>$711</td>
-                </tr>
-                <tr>
-                    <td>HB</td>
-                    <td>$220</td>
-                    <td>$340</td>
-                    <td>$510</td>
-                    <td>$520</td>
-                    <td>$650</td>
-                    <td>$695</td>
-                </tr>
-                <tr>
-                    <td rowspan="4">24. 12/22 ~ 24. 12/31 (High Season)</td>
-                    <td>BB</td>
-                    <td>$220</td>
-                    <td>$290</td>
-                    <td>$435</td>
-                    <td>$450</td>
-                    <td>$525</td>
-                    <td>$595</td>
-                </tr>
-                <tr>
-                    <td>BX1</td>
-                    <td>$316</td>
-                    <td>$482</td>
-                    <td>$723</td>
-                    <td>$738</td>
-                    <td>$909</td>
-                    <td>$979</td>
-                </tr>
-                <tr>
-                    <td>BX2</td>
-                    <td>$294</td>
-                    <td>$438</td>
-                    <td>$657</td>
-                    <td>$672</td>
-                    <td>$821</td>
-                    <td>$891</td>
-                </tr>
-                <tr>
-                    <td>HB</td>
-                    <td>$290</td>
-                    <td>$430</td>
-                    <td>$645</td>
-                    <td>$660</td>
-                    <td>$805</td>
-                    <td>$875</td>
-                </tr>
-                <tr>
-                    <td rowspan="2" colspan="2">객실 및 빌라 투숙규정 (총 434 체)</td>
-                    <td colspan="6">기준</td>
-                </tr>
-                <tr>
-                    <td colspan="6">최대</td>
-                </tr>
-                <tr>
-                    <td rowspan="2" colspan="2">추가인원 (아동 No Bed)</td>
-                    <td colspan="6">성인 2+아동 2</td>
-                </tr>
-                <tr>
-                    <td colspan="6">성인 4+아동 4</td>
-                </tr>
-                <tr>
-                    <td rowspan="2" colspan="2">아동 (만 4세이상~만12세미만) 유아 (만 4세미만) 유아 2명까지 무료</td>
-                    <td>BB</td>
-                    <td>$21</td>
-                    <td>BX1</td>
-                    <td>$59</td>
-                    <td>BX2</td>
-                    <td>$49</td>
-                </tr>
-                <tr>
-                    <td>HB</td>
-                    <td>$41</td>
-                    <td>HX1</td>
-                    <td>$79</td>
-                    <td>HX2</td>
-                    <td>$69</td>
-                </tr>
-                <tr>
-                    <td rowspan="2" colspan="2">기타</td>
-                    <td>AI</td>
-                    <td>$68</td>
-                    <td>AX1</td>
-                    <td>$106</td>
-                    <td>AX2</td>
-                    <td>$96</td>
-                </tr>
-                <tr>
-                    <td colspan="6">* BB : 조식 포함 / BX1 : 조식+빈앤브렉퍼스트 / BX2 : 조식+빈앤브렉퍼스트(연박할인) / HB : 하프보드 포함 / HX1 : 하프보드+빈앤브렉퍼스트 / HX2 : 풀보드+빈앤브렉퍼스트(연박할인)</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+
+    <table id="dataTable">
+        <!-- 테이블이 자바스크립트로 동적으로 생성됩니다 -->
+    </table>
+
+    <script>
+        fetch('data.json')
+            .then(response => response.json())
+            .then(data => {
+                const table = document.getElementById('dataTable');
+
+                // 테이블 데이터 및 스타일 적용
+                data.tableData.forEach((rowData, rowIndex) => {
+                    const row = document.createElement('tr');
+                    rowData.forEach((cellData, colIndex) => {
+                        const cell = document.createElement(rowIndex === 0 ? 'th' : 'td');
+                        cell.textContent = cellData.text;
+                        cell.style.backgroundColor = data.backgrounds[rowIndex][colIndex];
+                        cell.style.color = data.fontColors[rowIndex][colIndex];
+                        cell.style.fontSize = `${data.fontSizes[rowIndex][colIndex]}px`;
+                        cell.style.textAlign = data.horizontalAlignments[rowIndex][colIndex];
+                        cell.style.verticalAlign = data.verticalAlignments[rowIndex][colIndex];
+                        cell.style.fontWeight = data.fontWeights[rowIndex][colIndex];
+                        cell.style.fontStyle = data.fontStyles[rowIndex][colIndex];
+
+                        // 셀 병합 처리
+                        const mergeInfo = data.mergedCells.find(m =>
+                            m.row === rowIndex && m.column === colIndex);
+                        if (mergeInfo) {
+                            if (mergeInfo.numRows > 1) {
+                                cell.rowSpan = mergeInfo.numRows;
+                            }
+                            if (mergeInfo.numColumns > 1) {
+                                cell.colSpan = mergeInfo.numColumns;
+                            }
+                        }
+
+                        row.appendChild(cell);
+                    });
+                    table.appendChild(row);
+                });
+            });
+    </script>
+
 </body>
 </html>
